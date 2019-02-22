@@ -4,5 +4,20 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />	
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+		<property name="username" value="mappet_db" />
+		<property name="password" value="mappet" />
+	</bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="typeAliasesPackage" value="com.mul.mappet.vo"/>
+		<property name="mapperLocations" value="classpath:/mapper/*Mapper.xml"/>
+	</bean>		
+	<bean id="Mapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.mul.mappet.dao.BoardDAO"/>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>		
 </beans>
